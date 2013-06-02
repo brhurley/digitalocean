@@ -1,0 +1,24 @@
+#
+# Shorewall version 3.4 - Rules File
+#
+# For information on the settings in this file, type "man shorewall-rules"
+#
+# See http://shorewall.net/Documentation.htm#Rules for additional information.
+#
+#############################################################################################################
+#ACTION	SOURCE		DEST		PROTO	DEST	SOURCE		ORIGINAL	RATE		USER/	MARK
+#						PORT	PORT(S)		DEST		LIMIT		GROUP
+#SECTION ESTABLISHED
+#SECTION RELATED
+SECTION NEW
+ACCEPT	net		$FW		icmp	8
+# ftp
+#ACCEPT	net		$FW		tcp	20
+#ACCEPT	net		$FW		tcp	21
+# ssh
+ACCEPT	net		$FW		tcp	22
+# apache
+ACCEPT	net		$FW		tcp	80
+#tomcat
+#ACCEPT	net		$FW		tcp	8080
+#LAST LINE -- ADD YOUR ENTRIES BEFORE THIS ONE -- DO NOT REMOVE

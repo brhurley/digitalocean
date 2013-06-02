@@ -1,0 +1,107 @@
+Commands to setup a Digital Ocean server 
+
+Setup your public key in your digital ocean account and startup server or create authorized_keys file after creation.
+
+cat ~/.ssh/id_rsa.pub | ssh root@$serverip "cat >> ~/.ssh/authorized_keys"
+
+
+Login to the box with 
+
+ssh root@<ip>
+
+Upgrade the os
+apt-get update
+apt-get upgrade
+
+Fix the time to local time
+cp /usr/share/zoneinfo/America/Chicago /etc/localtime
+apt-get install ntp
+
+Add hostname to hosts for apache
+vi /etc/hosts   
+
+Install firewall notice that iptables are not very secure
+iptables -n -L
+
+
+apt-get install shorewall fail2ban 
+copy shore wall config files to /etc/shorewall
+
+scp Shorewall/blacklist root@<ip>:/etc/shorewall/blacklist
+scp Shorewall/interfaces root@<ip>:/etc/shorewall/interfaces
+scp Shorewall/params root@<ip>:/etc/shorewall/params
+scp Shorewall/policy root@<ip>:/etc/shorewall/policy
+scp Shorewall/rules root@<ip>:/etc/shorewall/rules
+scp Shorewall/zones root@<ip>:/etc/shorewall/zones
+
+copy fail2ban/jail.conf to /etc/fail2ban
+scp fail2ban/jail.conf root@<ip>:/etc/fail2ban/jail.conf
+
+
+Run Shorewall check and restart if no failures.
+shorewall check
+shorewall restart
+
+Look at the ip tables to confirm.
+iptables -n -L
+
+
+--------------------------------------------------------------------------
+Install Apache
+
+apt-get install apache2
+
+
+
+--------------------------------------------------------------------------
+Install Tomcat and connect with Apache
+
+apt-get install tomcat7 libapache2-mod-jk
+
+
+Add to /etc/apache2/apache2.conf
+
+JkShmFile /var/log/apache2/mod_jk.shm
+JkLogFile /var/log/apache2/mod_jk.log
+JkLogLevel info
+JkLogStampFormat "[%a %b %d %H:%M:%S %Y] "
+
+
+
+Add to /etc/apache2/sites-enabled/000-default
+
+#       DocumentRoot /var/www
+
+
+        <Location /*>
+                JkMount ajp13_worker
+        </Location>
+
+
+Enable jk port in /etc/tomcat7/server.xml
+
+<Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
+
+
+Restart tomcat and apache
+/etc/init.d/tomcat7 restart
+/etc/init.d/apache2 restart
+
+
+
+--------------------------------------------------------------------------
+Directories:
+
+Apache config: /etc/apache2
+Apache web: /var/www
+Apache log: /var/log/apache2
+Apring cgi-bin: /usr/lib/cgi-bin
+
+Tomcat7 config: /etc/tomcat7
+Tomcat7 bin: /usr/share/tomcat7
+Tomcat7 conf: /var/lib/tomcat7/conf
+Tomcat7 logs: /var/lib/tomcat7/logs
+Tomcat7 webapps: /var/lib/tomcat7/webapps
+
+
+Mod JK config: /etc/libapache2-mod-jk
