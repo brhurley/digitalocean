@@ -7,7 +7,7 @@ cat ~/.ssh/id_rsa.pub | ssh root@$serverip "cat >> ~/.ssh/authorized_keys"
 
 Login to the box with 
 
-ssh root@192.241.129.30
+ssh root@198.199.81.66
 
 Upgrade the os
 apt-get update
@@ -27,15 +27,15 @@ iptables -n -L
 apt-get install shorewall fail2ban 
 copy shore wall config files to /etc/shorewall
 
-scp shorewall/blacklist root@192.241.129.30:/etc/shorewall/blacklist
-scp shorewall/interfaces root@192.241.129.30:/etc/shorewall/interfaces
-scp shorewall/params root@192.241.129.30:/etc/shorewall/params
-scp shorewall/policy root@192.241.129.30:/etc/shorewall/policy
-scp shorewall/rules root@192.241.129.30:/etc/shorewall/rules
-scp shorewall/zones root@192.241.129.30:/etc/shorewall/zones
+scp shorewall/blacklist root@198.199.81.66:/etc/shorewall/blacklist
+scp shorewall/interfaces root@198.199.81.66:/etc/shorewall/interfaces
+scp shorewall/params root@198.199.81.66:/etc/shorewall/params
+scp shorewall/policy root@198.199.81.66:/etc/shorewall/policy
+scp shorewall/rules root@198.199.81.66:/etc/shorewall/rules
+scp shorewall/zones root@198.199.81.66:/etc/shorewall/zones
 
 # copy fail2ban/jail.conf to /etc/fail2ban
-scp fail2ban/jail.conf root@192.241.129.30:/etc/fail2ban/jail.conf
+scp fail2ban/jail.conf root@198.199.81.66:/etc/fail2ban/jail.conf
 
 
 Run Shorewall check and restart if no failures.
@@ -52,7 +52,7 @@ Install Apache
 apt-get install apache2
 
 
-http://192.241.129.30
+http://198.199.81.66
 
 # show that apache is up
 
@@ -92,19 +92,19 @@ Restart tomcat and apache
 /etc/init.d/apache2 restart
 
 show that tomcat is now responding
-http://192.241.129.30
+http://198.199.81.66
 
 
 copy web app to tomcat /var/lib/tomcat7/webapps
 
 /etc/init.d/tomcat7 stop
 
-scp ROOT.war root@192.241.129.30:/var/lib/tomcat7/webapps/ROOT.war
+scp ROOT.war root@198.199.81.66:/var/lib/tomcat7/webapps/ROOT.war
 
 /etc/init.d/tomcat7 start
 
 
-http://192.241.129.30
+http://198.199.81.66
 
 
 
